@@ -6,6 +6,7 @@ import net.caffeinemc.caffeineconfig.AbstractCaffeineConfigMixinPlugin;
 import net.caffeinemc.caffeineconfig.CaffeineConfig;
 import net.caffeinemc.caffeineconfig.Option;
 import net.minecraftforge.fml.loading.FMLPaths;
+import net.minecraftforge.fml.loading.LoadingModList;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -16,6 +17,10 @@ import java.util.Properties;
 public class LithiumConfig extends AbstractCaffeineConfigMixinPlugin {
 
     private CaffeineConfig applyLithiumCompat(CaffeineConfig config) {
+        if (LoadingModList.get().getModFileById("ferritecore") != null) { // https://github.com/malte0811/FerriteCore/blob/1.20.0/Fabric/src/main/resources/fabric.mod.json#L38
+            config.getOption("mixin.alloc.blockstate").addModOverride(false, "ferritecore");
+        }
+
         Option option = config.getOption("mixin.block.hopper.worldedit_compat");
         if (!option.isEnabled() && WorldEditCompat.WORLD_EDIT_PRESENT) {
             option.addModOverride(true, "radium");
