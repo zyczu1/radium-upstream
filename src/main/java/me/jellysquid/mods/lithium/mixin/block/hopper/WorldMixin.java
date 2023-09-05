@@ -14,21 +14,21 @@ import net.minecraft.world.chunk.WorldChunk;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 import java.util.Map;
 
 @Mixin(World.class)
-public class WorldMixin {
+public class WorldMixin { // TODO verify
 
     @Inject(
-            method = "setBlockState(Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/BlockState;II)Z",
-            at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;onBlockChanged(Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/BlockState;Lnet/minecraft/block/BlockState;)V"),
-            locals = LocalCapture.CAPTURE_FAILHARD
+            method = "markAndNotifyBlock",
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;onBlockChanged(Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/BlockState;Lnet/minecraft/block/BlockState;)V")
 
     )
-    private void updateHopperOnUpdateSuppression(BlockPos pos, BlockState state, int flags, int maxUpdateDepth, CallbackInfoReturnable<Boolean> cir, WorldChunk worldChunk, Block block, BlockState blockState, BlockState blockState2) {
+    private void updateHopperOnUpdateSuppression(BlockPos pos, WorldChunk worldChunk, BlockState blockState, BlockState blockState2, int flags, int k, CallbackInfo ci) {
         if ((flags & Block.NOTIFY_NEIGHBORS) == 0) {
             //No block updates were sent. We need to update nearby hoppers to avoid outdated inventory caches being used
 

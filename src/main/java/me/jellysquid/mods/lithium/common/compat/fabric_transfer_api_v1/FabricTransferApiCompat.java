@@ -1,7 +1,7 @@
 package me.jellysquid.mods.lithium.common.compat.fabric_transfer_api_v1;
 
 import net.fabricmc.fabric.api.transfer.v1.item.ItemStorage;
-import net.fabricmc.loader.api.FabricLoader;
+import net.minecraftforge.fml.loading.LoadingModList;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HopperBlock;
 import net.minecraft.block.entity.HopperBlockEntity;
@@ -12,7 +12,7 @@ public class FabricTransferApiCompat {
     public static final boolean FABRIC_TRANSFER_API_V_1_PRESENT;
 
     static {
-        FABRIC_TRANSFER_API_V_1_PRESENT = FabricLoader.getInstance().isModLoaded("fabric-transfer-api-v1");
+        FABRIC_TRANSFER_API_V_1_PRESENT = LoadingModList.get().getModFileById("fabric-transfer-api-v1") != null;
     }
 
     public static boolean canHopperInteractWithApiInventory(HopperBlockEntity hopperBlockEntity, BlockState hopperState, boolean extracting) {

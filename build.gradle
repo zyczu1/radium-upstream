@@ -1,7 +1,7 @@
 import net.fabricmc.loom.task.RemapJarTask
 
 plugins {
-    id 'fabric-loom' version '1.0-SNAPSHOT'
+    id 'dev.architectury.loom' version '1.0-SNAPSHOT'
     id 'maven-publish'
     id 'net.caffeinemc.mixin-config-plugin' version '1.0-SNAPSHOT'
 }
@@ -9,9 +9,15 @@ plugins {
 loom {
     accessWidenerPath = file("src/main/resources/lithium.accesswidener")
     mixin.defaultRefmapName = "mixins.lithium.refmap.json"
+
+    forge {
+        convertAccessWideners = true
+
+        mixinConfig "lithium.mixins.json"
+    }
 }
 
-apply plugin: 'fabric-loom'
+apply plugin: 'dev.architectury.loom'
 apply plugin: 'net.caffeinemc.mixin-config-plugin'
 
 sourceCompatibility = JavaVersion.VERSION_17
@@ -51,42 +57,19 @@ repositories {
     allprojects {
         repositories {
             maven { url 'https://jitpack.io' }
+            maven { url "https://maven.su5ed.dev/releases" }
+            maven { url "https://repo.constructlegacy.ru/public" }
         }
     }
 }
-
-loom {
-    runs {
-        testmodServer {
-            runDir("testserver");
-            server()
-            ideConfigGenerated project.rootProject == project
-            source sourceSets.main
-        }
-        autoTestServer {
-            runDir("testserver");
-            inherit testmodServer
-            vmArg "-Dfabric.autoTest"
-        }
-    }
-}
-
 
 dependencies {
     //to change the versions see the gradle.properties file
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
     mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
 
-    modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
-    modImplementation 'com.github.2No2Name:McTester:v0.3.3'
-
-    Set<String> fabricApiModulesCompileOnly = [
-            "fabric-transfer-api-v1"
-    ]
-    // Add each fabric api module as a compile only dependency
-     fabricApiModulesCompileOnly.forEach {
-        modCompileOnly(fabricApi.module(it, "${project.fabric_version}"))
-    }
+    forge "net.minecraftforge:forge:${project.loader_version}"
+    modCompileOnly "dev.su5ed.sinytra.fabric-api:fabric-transfer-api-v1:${project.fabric_version}" // Ye
 
     compileOnly 'net.caffeinemc:mixin-config-plugin:1.0-SNAPSHOT'
 }
@@ -107,7 +90,7 @@ createMixinConfig.dependsOn compileJava
 processResources {
     inputs.property "version", project.version
 
-    filesMatching("fabric.mod.json") {
+    filesMatching("META-INF/mods.toml") {
         expand "version": project.version
     }
 }

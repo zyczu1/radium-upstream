@@ -21,9 +21,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 @Mixin(Entity.class)
-public abstract class EntityMixin {
+public abstract class EntityMixin { // TODO aready patched by forge
 
-    @Shadow
+    /*@Shadow
     public abstract Box getBoundingBox();
 
     @Shadow
@@ -73,5 +73,5 @@ public abstract class EntityMixin {
         //side effects of not finding a fluid:
         this.fluidHeight.put(tag, 0.0);
         cir.setReturnValue(false);
-    }
+    }*/
 }
