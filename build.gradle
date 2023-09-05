@@ -72,6 +72,8 @@ dependencies {
     modCompileOnly "dev.su5ed.sinytra.fabric-api:fabric-transfer-api-v1:${project.fabric_version}" // Ye
 
     compileOnly 'net.caffeinemc:mixin-config-plugin:1.0-SNAPSHOT'
+
+    implementation(forgeRuntimeLibrary(include("com.github.dima_dencep.mods:NanoLiveConfig:1.1.0")))
 }
 
 createMixinConfig {
