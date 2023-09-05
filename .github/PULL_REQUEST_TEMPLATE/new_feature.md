@@ -9,11 +9,11 @@ assignees: ''
 
 ### Preface
 
-Please read our [Contributor Guidelines](https://github.com/CaffeineMC/lithium-fabric/blob/1.17.x/dev/CONTRIBUTING.md)
+Please read our [Contributor Guidelines](https://github.com/Reforged-Hub/radium-upstream/blob/1.20.1/CONTRIBUTING.md)
 before submitting any pull requests to this repository.
 
 By submitting a pull request, you are indicating that you agree to
-the [Contributor License Agreement](https://github.com/CaffeineMC/lithium-fabric/blob/1.17.x/dev/CONTRIBUTING.md#contributor-license-agreement-cla)
+the [Contributor License Agreement](https://github.com/Reforged-Hub/radium-upstream/blob/1.20.1/CONTRIBUTING.md#contributor-license-agreement-cla)
 and that your code will be licensed irrecoverably under the GNU LGPLv3. If you do not agree to these terms, do not open
 a pull request.
 

@@ -27,7 +27,7 @@ everything above this dashed line (including the line itself.)
 > Replace this text with the exact version of the mod you are using. Every part of the version is important! If you
 > do not know what version you are using, look at the file name in your "mods" folder.
 > 
-> Example: lithium-fabric-mc1.16.5-0.6.4
+> Example: radium-mc1.16.5-0.6.4
 
 ### Expected Behavior
 

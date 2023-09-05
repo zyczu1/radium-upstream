@@ -27,7 +27,7 @@ everything above this dashed line (including the line itself.)
 > Replace this text with the exact version of the mod you are using. Every part of the version is important! If you
 > do not know what version you are using, look at the file name in your "mods" folder.
 >
-> Example: lithium-fabric-mc1.16.5-0.6.4
+> Example: radium-mc1.16.5-0.6.4
 > 
 ### Reproduction Steps
 
@@ -56,4 +56,4 @@ everything above this dashed line (including the line itself.)
 ### Additional Information
 
 > Provide any additional information or context which may be relevant to the issue. If you have none to add,
-> you can remove this section. If possible, please confirm that the crash does not happen when Lithium is not installed.
+> you can remove this section. If possible, please confirm that the crash does not happen when Radium (Lithium) is not installed.
