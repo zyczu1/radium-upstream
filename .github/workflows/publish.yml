@@ -59,6 +59,9 @@ jobs:
           name: Radium ${{ steps.read_property.outputs.mod_version }} for ${{ steps.read_property.outputs.minecraft_version }}
 
           changelog: ${{steps.build_changelog.outputs.changelog}}
+          
+          files: |
+            build/libs/!(*-@(api|dev|sources|javadoc)).jar
 
           version-type: beta
 
