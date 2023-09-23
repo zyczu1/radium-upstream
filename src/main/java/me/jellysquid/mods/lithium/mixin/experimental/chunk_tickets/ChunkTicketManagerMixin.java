@@ -41,8 +41,8 @@ public abstract class ChunkTicketManagerMixin {
         return true;
     }
 
-    @Redirect(method = "method_14041", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/collection/SortedArraySet;create(I)Lnet/minecraft/util/collection/SortedArraySet;"))
-    private static SortedArraySet<ChunkTicket<?>> useLithiumSortedArraySet(int initialCapacity) {
+    @Redirect(method = { "method_14041", "m_183922_" }, at = @At(value = "INVOKE", target = "Lnet/minecraft/util/collection/SortedArraySet;create(I)Lnet/minecraft/util/collection/SortedArraySet;"))
+    private static SortedArraySet<ChunkTicket<?>> useLithiumSortedArraySet(int initialCapacity) { // TODO fix redirect method
         return new ChunkTicketSortedArraySet<>(initialCapacity);
     }
 

@@ -5,7 +5,8 @@ import me.jellysquid.mods.lithium.common.ai.pathing.BlockStatePathingCache;
 import me.jellysquid.mods.lithium.common.ai.pathing.PathNodeCache;
 import me.jellysquid.mods.lithium.common.entity.FluidCachingEntity;
 import me.jellysquid.mods.lithium.common.reflection.ReflectionUtil;
-import net.fabricmc.loader.api.FabricLoader;
+import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
+import cpw.mods.modlauncher.api.INameMappingService;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
@@ -117,7 +118,7 @@ public class BlockStateFlags {
             //How to find the remapped methods:
             //1) Run in the debugger: System.out.println(FabricLoader.getInstance().getMappingResolver().getNamespaceData("intermediary").methodNames)
             //2) Ctrl+F for the method name, in this case "onEntityCollision". Make sure to find the correct one.
-            private final String remapped_onEntityCollision = FabricLoader.getInstance().getMappingResolver().mapMethodName("intermediary", "net.minecraft.class_4970", "method_9548", "(Lnet/minecraft/class_2680;Lnet/minecraft/class_1937;Lnet/minecraft/class_2338;Lnet/minecraft/class_1297;)V");
+            private final String remapped_onEntityCollision = ObfuscationReflectionHelper.remapName(INameMappingService.Domain.METHOD, "m_7892_");
             @Override
             public boolean test(BlockState operand) {
                 return ReflectionUtil.hasMethodOverride(operand.getBlock().getClass(), AbstractBlock.class, true, this.remapped_onEntityCollision, BlockState.class, World.class, BlockPos.class, Entity.class);
