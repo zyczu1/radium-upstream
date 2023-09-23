@@ -250,7 +250,8 @@ Various entity collision optimizations
 (default: `true`)  
 Skips being pushed by fluids when the nearby chunk sections do not contain this fluid  
 Requirements:
-- `mixin.util.block_tracking=true`  
+- `mixin.util.block_tracking=true`
+- `mixin.experimental.entity.block_caching.fluid_pushing=false`  
   
 ### `mixin.entity.collisions.intersection`
 (default: `true`)  
@@ -264,10 +265,6 @@ Requirements:
 Entity movement uses optimized block access and optimized and delayed entity access  
 Requirements:
 - `mixin.util.chunk_access=true`  
-  
-### `mixin.entity.collisions.suffocation`
-(default: `true`)  
-Avoids stream code in suffocation check  
   
 ### `mixin.entity.collisions.unpushable_cramming`
 (default: `true`)  
@@ -319,9 +316,55 @@ Accesses entities of the correct type directly instead of accessing all nearby e
 (default: `true`)  
 Skips repeated checks whether the equipment of an entity changed. Instead equipment updates are detected  
   
-### `mixin.entity.skip_fire_check`
+### `mixin.experimental`
+(default: `false`)  
+Various experimental optimizations  
+  
+### `mixin.experimental.chunk_tickets`
 (default: `true`)  
-Skip searching for fire sources in the burn time countdown logic when they are not on fire and the result does not make a difference.  
+Only check positions with expiring tickets during ticket expiration. Can cause reordering of chunk unloading when unloading more than approximately two billion chunks at once.  
+  
+### `mixin.experimental.entity`
+(default: `true`)  
+Experimental entity optimizations  
+  
+### `mixin.experimental.entity.block_caching`
+(default: `true`)  
+Use block listening system to allow skipping stuff in entity code  
+Requirements:
+- `mixin.util.block_tracking.block_listening=true`  
+  
+### `mixin.experimental.entity.block_caching.block_support`
+(default: `true`)  
+Use the block listening system to skip supporting block search (used for honey block pushing, velocity modifiers like soulsand, etc)  
+Requirements:
+- `mixin.util.block_tracking.block_listening=true`  
+  
+### `mixin.experimental.entity.block_caching.block_touching`
+(default: `true`)  
+Use the block listening system to skip block touching (like cactus touching).  
+Requirements:
+- `mixin.util.block_tracking.block_listening=true`  
+  
+### `mixin.experimental.entity.block_caching.fire_lava_touching`
+(default: `true`)  
+Skip searching for fire or lava in the burn time countdown logic when they are not on fire and the result does not make a difference. Also use the block listening system to cache whether the entity is touching fire or lava.  
+  
+### `mixin.experimental.entity.block_caching.fluid_pushing`
+(default: `true`)  
+Use the block listening system to cache entity fluid interaction when not touching fluid currents.  
+Requirements:
+- `mixin.util.block_tracking.block_listening=true`  
+  
+### `mixin.experimental.entity.block_caching.suffocation`
+(default: `true`)  
+Use the block listening system to cache the entity suffocation check.  
+Requirements:
+- `mixin.util.block_tracking.block_listening=true`  
+  
+### `mixin.experimental.spawning`
+(default: `true`)  
+Experimental optimizations to spawning conditions. Reorders the iteration over entities to match the chunks and chunk sections, reducing the number of cache misses.  
   
 ### `mixin.gen`
 (default: `true`)  
@@ -329,7 +372,7 @@ Various world generation optimizations
   
 ### `mixin.gen.cached_generator_settings`
 (default: `false`)  
-World generator settings cache the sea level  
+World generator settings cache the sea level. Disabled by default due to startup crash.  
   
 ### `mixin.gen.chunk_region`
 (default: `true`)  
@@ -394,6 +437,10 @@ Allows access to existing BlockEntities without creating new ones
 ### `mixin.util.block_tracking`
 (default: `true`)  
 Chunk sections count certain blocks inside them and provide a method to quickly check whether a chunk contains any of these blocks  
+  
+### `mixin.util.block_tracking.block_listening`
+(default: `true`)  
+Chunk sections can notify registered listeners about certain blocks being placed or broken  
   
 ### `mixin.util.chunk_access`
 (default: `true`)  
@@ -480,6 +527,14 @@ Several changes to the chunk manager to speed up chunk access
 ### `mixin.world.chunk_tickets`
 (default: `true`)  
 Improves the chunk ticket sets by speeding up the removal of chunk tickets  
+  
+### `mixin.world.chunk_ticking`
+(default: `true`)  
+Various optimizations to chunk ticking  
+  
+### `mixin.world.chunk_ticking.spread_ice`
+(default: `true`)  
+Access FluidState through already known BlockState instead of accessing the world again.  
   
 ### `mixin.world.combined_heightmap_update`
 (default: `true`)  

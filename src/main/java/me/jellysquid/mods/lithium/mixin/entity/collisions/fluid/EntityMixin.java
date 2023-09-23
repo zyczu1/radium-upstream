@@ -4,6 +4,7 @@ import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
 import me.jellysquid.mods.lithium.common.block.BlockCountingSection;
 import me.jellysquid.mods.lithium.common.block.BlockStateFlags;
 import me.jellysquid.mods.lithium.common.block.TrackedBlockStatePredicate;
+import me.jellysquid.mods.lithium.common.entity.FluidCachingEntity;
 import me.jellysquid.mods.lithium.common.util.Pos;
 import net.minecraft.entity.Entity;
 import net.minecraft.fluid.Fluid;
@@ -21,7 +22,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 @Mixin(Entity.class)
-public abstract class EntityMixin { // TODO aready patched by forge
+public abstract class EntityMixin implements FluidCachingEntity { // TODO aready patched by forge
 
     /*@Shadow
     public abstract Box getBoundingBox();
@@ -62,7 +63,7 @@ public abstract class EntityMixin { // TODO aready patched by forge
                 Chunk chunk = this.world.getChunk(chunkX, chunkZ);
                 for (int chunkYIndex = chunkYIndex1; chunkYIndex <= chunkYIndex2; chunkYIndex++) {
                     ChunkSection section = chunk.getSectionArray()[chunkYIndex];
-                    if (((BlockCountingSection) section).anyMatch(blockStateFlag, true)) {
+                    if (((BlockCountingSection) section).mayContainAny(blockStateFlag)) {
                         //fluid found, cannot skip code
                         return;
                     }
