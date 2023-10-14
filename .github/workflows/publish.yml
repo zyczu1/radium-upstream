@@ -63,7 +63,7 @@ jobs:
           files: |
             build/libs/!(*-@(api|dev|sources|javadoc)).jar
 
-          version-type: beta
+          version-type: release
 
           loaders: |
             forge
@@ -71,6 +71,9 @@ jobs:
 
           game-versions: |
             ${{ steps.read_property.outputs.minecraft_version }}
+
+          dependencies: |
+            canary(incompatible)
 
           java: |
             17
