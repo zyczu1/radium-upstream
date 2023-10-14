@@ -5,6 +5,8 @@ import me.jellysquid.mods.lithium.common.compat.worldedit.WorldEditCompat;
 import net.caffeinemc.caffeineconfig.AbstractCaffeineConfigMixinPlugin;
 import net.caffeinemc.caffeineconfig.CaffeineConfig;
 import net.caffeinemc.caffeineconfig.Option;
+import net.minecraftforge.fml.loading.FMLEnvironment;
+import net.minecraftforge.fml.loading.FMLLoader;
 import net.minecraftforge.fml.loading.FMLPaths;
 import net.minecraftforge.fml.loading.LoadingModList;
 
@@ -24,6 +26,12 @@ public class LithiumConfig extends AbstractCaffeineConfigMixinPlugin {
         Option option = config.getOption("mixin.block.hopper.worldedit_compat");
         if (!option.isEnabled() && WorldEditCompat.WORLD_EDIT_PRESENT) {
             option.addModOverride(true, "radium");
+        }
+
+        if (!LoadingModList.get().getErrors().isEmpty()) {
+            for (Option op : config.getOptions().values()) {
+                op.addModOverride(false, "fml-loading-error");
+            }
         }
 
         return config;
