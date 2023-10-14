@@ -7,6 +7,9 @@
   "injectors": {
     "defaultRequire": 1
   },
+  "overwrites": {
+    "conformVisibility": true
+  },
   "mixins": [
     "ai.nearby_entity_tracking.EntityMixin",
     "ai.nearby_entity_tracking.EntityTrackingSectionMixin",
