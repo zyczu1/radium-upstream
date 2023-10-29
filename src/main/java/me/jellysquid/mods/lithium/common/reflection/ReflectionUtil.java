@@ -6,11 +6,7 @@ import net.minecraft.util.crash.CrashReportSection;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.regex.Pattern;
-
 public class ReflectionUtil {
-    private static final Pattern pattern = Pattern.compile("Attempted to load class ([A-Za-z]+(/[A-Za-z]+)+) for invalid dist [A-Za-z0-9]+_[A-Za-z0-9]+", Pattern.CASE_INSENSITIVE);
-
     public static boolean hasMethodOverride(Class<?> clazz, Class<?> superclass, boolean fallbackResult, String methodName, Class<?>... methodArgs) {
         while (clazz != null && clazz != superclass && superclass.isAssignableFrom(clazz)) {
             try {
@@ -18,10 +14,10 @@ public class ReflectionUtil {
                 return true;
             } catch (NoSuchMethodException e) {
                 clazz = clazz.getSuperclass();
-            } catch (NoClassDefFoundError error) {
-                Logger logger = LogManager.getLogger("Lithium Class Analysis");
-                logger.warn("Lithium Class Analysis Error: Class " + clazz.getName() + " cannot be analysed, because" +
-                        " getting declared methods crashes with NoClassDefFoundError: " + error.getMessage() +
+            } catch (NoClassDefFoundError | RuntimeException error) {
+                Logger logger = LogManager.getLogger("Radium Class Analysis");
+                logger.warn("Radium Class Analysis Error: Class " + clazz.getName() + " cannot be analysed, because" +
+                        " getting declared methods crashes with " + error.getClass().getSimpleName() + ": " + error.getMessage() +
                         ". This is usually caused by modded" +
                         " entities declaring methods that have a return type or parameter type that is annotated" +
                         " with @OnlyIn(Dist.CLIENT). Loading the type is not possible, because" +
@@ -30,12 +26,8 @@ public class ReflectionUtil {
                         " Lithium handles this error by assuming the class cannot be included in some optimizations.");
                 return fallbackResult;
             } catch (Throwable e) {
-                if (pattern.matcher(e.getMessage()).matches()) {
-                    return false;
-                }
-
                 final String crashedClass = clazz.getName();
-                CrashReport crashReport = CrashReport.create(e, "Lithium Class Analysis");
+                CrashReport crashReport = CrashReport.create(e, "Radium Class Analysis");
                 CrashReportSection crashReportSection = crashReport.addElement(e.getClass().toString() + " when getting declared methods.");
                 crashReportSection.add("Analyzed class", crashedClass);
                 crashReportSection.add("Analyzed method name", methodName);
