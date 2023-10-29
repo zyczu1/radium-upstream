@@ -1,5 +1,6 @@
 package me.jellysquid.mods.lithium.common.ai.pathing;
 
+import me.jellysquid.mods.lithium.common.reflection.ReflectionUtil;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.util.math.BlockPos;
@@ -26,16 +27,6 @@ public class BlockClassChecker {
     }
 
     private static Function<Class<?>, Boolean> hasNonstandardImplementation(String name, Class<?>... args) {
-        return blockClass -> {
-            try {
-                // We know the behavior of the default implementation in IForgeBlock, any other
-                // implementation is impossible to reason about and needs to be called dynamically
-                Method dynamicGetType = blockClass.getMethod(name, args);
-                return dynamicGetType.getDeclaringClass() != IForgeBlock.class;
-            } catch (NoSuchMethodException e) {
-                e.printStackTrace();
-                return true;
-            }
-        };
+        return blockClass -> ReflectionUtil.hasMethodOverride(blockClass, IForgeBlock.class, false, name, args);
     }
 }
