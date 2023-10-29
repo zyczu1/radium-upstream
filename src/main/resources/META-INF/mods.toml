@@ -13,3 +13,4 @@ description = "A Forge port of mod designed to improve the general performance o
 credits = "JellySquid, 2No2Name"
 authors = "dima_dencep, NanoLive"
 displayURL = "https://curseforge.com/minecraft/mc-mods/radium-reforged"
+provides=["lithium"]
