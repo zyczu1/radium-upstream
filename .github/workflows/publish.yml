@@ -23,7 +23,7 @@ jobs:
         run: chmod +x gradlew
 
       - name: Upload assets to releases
-        run: ./gradlew build
+        run: ./gradlew build publish
 
       - name: Get previous tag
         run: echo "previous_tag=$(git rev-parse $(git describe --tags --abbrev=0 --exclude *-dev) 2>/dev/null || echo '')" >> $GITHUB_ENV
