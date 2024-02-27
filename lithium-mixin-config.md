@@ -37,7 +37,7 @@ their range.
   
   
 ### `mixin.ai.pathing`
-(default: `false`)  
+(default: `true`)  
 A faster code path is used for determining what kind of path-finding node type is associated with a
 given block. Additionally, a faster chunk cache will be used for accessing blocks while evaluating
 paths.
