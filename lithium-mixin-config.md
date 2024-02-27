@@ -25,7 +25,8 @@ Mob AI optimizations
 Event-based system for tracking nearby entities.
   
 Requirements:
-- `mixin.util.entity_section_position=true`  
+- `mixin.util.entity_section_position=true`
+- `mixin.util.accessors=true`  
   
 ### `mixin.ai.nearby_entity_tracking.goals`
 (default: `true`)  
@@ -150,7 +151,8 @@ Reduces hopper lag using caching, notification systems and BlockEntity sleeping
 Requirements:
 - `mixin.util.entity_movement_tracking=true`
 - `mixin.util.block_entity_retrieval=true`
-- `mixin.util.inventory_change_listening=true`  
+- `mixin.util.inventory_change_listening=true`
+- `mixin.util.item_stack_tracking=true`  
   
 ### `mixin.block.hopper.worldedit_compat`
 (default: `false`)  
@@ -177,6 +179,8 @@ Various world chunk optimizations
 ### `mixin.chunk.entity_class_groups`
 (default: `true`)  
 Allow grouping entity classes for faster entity access, e.g. boats and shulkers  
+Requirements:
+- `mixin.util.accessors=true`  
   
 ### `mixin.chunk.no_locking`
 (default: `true`)  
@@ -362,9 +366,24 @@ Use the block listening system to cache the entity suffocation check.
 Requirements:
 - `mixin.util.block_tracking.block_listening=true`  
   
+### `mixin.experimental.entity.item_entity_merging`
+(default: `true`)  
+Optimize item entity merging by categorizing item entities by item type and only attempting to merge with the same type. Categorizing by stack size allows skipping merge attempts of full item entities or two more than half full item entities.  
+Requirements:
+- `mixin.util.accessors=true`
+- `mixin.experimental.util.item_entity_by_type=true`
+- `mixin.util.item_stack_tracking=true`  
+  
 ### `mixin.experimental.spawning`
 (default: `true`)  
 Experimental optimizations to spawning conditions. Reorders the iteration over entities to match the chunks and chunk sections, reducing the number of cache misses.  
+  
+### `mixin.experimental.util.item_entity_by_type`
+(default: `true`)  
+Allow retrieving item entities grouped by item type and count from the world.  
+Requirements:
+- `mixin.util.accessors=true`
+- `mixin.util.item_stack_tracking=true`  
   
 ### `mixin.gen`
 (default: `true`)  
@@ -430,6 +449,10 @@ Specialized VoxelShape implementations are used for cuboid and empty shapes. Col
 (default: `true`)  
 Various utilities for other mixins  
   
+### `mixin.util.accessors`
+(default: `true`)  
+Allow accessing certain fields and functions that are normally inaccessible  
+  
 ### `mixin.util.block_entity_retrieval`
 (default: `true`)  
 Allows access to existing BlockEntities without creating new ones  
@@ -465,6 +488,10 @@ Certain BlockEntity Inventories emit updates to their listeners when their stack
 BlockEntity Inventories update their listeners when a comparator is placed near them  
 Requirements:
 - `mixin.util.block_entity_retrieval=true`  
+  
+### `mixin.util.item_stack_tracking`
+(default: `true`)  
+ItemStacks notify subscribers about changes to their count.  
   
 ### `mixin.util.world_border_listener`
 (default: `true`)  
@@ -551,10 +578,6 @@ Faster block and fluid access due to inlining and reduced method size
 ### `mixin.world.inline_height`
 (default: `true`)  
 Reduces indirection by inlining world height access methods  
-  
-### `mixin.world.player_chunk_tick`
-(default: `true`)  
-Batches sending chunks to player together by replacing the corresponding code  
   
 ### `mixin.world.temperature_cache`
 (default: `true`)  

@@ -4,10 +4,10 @@ import me.jellysquid.mods.lithium.common.client.ClientWorldAccessor;
 import me.jellysquid.mods.lithium.common.entity.EntityClassGroup;
 import me.jellysquid.mods.lithium.common.entity.pushable.EntityPushablePredicate;
 import me.jellysquid.mods.lithium.common.world.chunk.ClassGroupFilterableList;
-import me.jellysquid.mods.lithium.mixin.chunk.entity_class_groups.ClientEntityManagerAccessor;
-import me.jellysquid.mods.lithium.mixin.chunk.entity_class_groups.EntityTrackingSectionAccessor;
-import me.jellysquid.mods.lithium.mixin.chunk.entity_class_groups.ServerEntityManagerAccessor;
-import me.jellysquid.mods.lithium.mixin.chunk.entity_class_groups.ServerWorldAccessor;
+import me.jellysquid.mods.lithium.mixin.util.accessors.ClientEntityManagerAccessor;
+import me.jellysquid.mods.lithium.mixin.util.accessors.EntityTrackingSectionAccessor;
+import me.jellysquid.mods.lithium.mixin.util.accessors.ServerEntityManagerAccessor;
+import me.jellysquid.mods.lithium.mixin.util.accessors.ServerWorldAccessor;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.collection.TypeFilterableList;
 import net.minecraft.util.function.LazyIterationConsumer;
@@ -27,7 +27,7 @@ public class WorldHelper {
     /**
      * Partial [VanillaCopy]
      * The returned entity iterator is only used for collision interactions. As most entities do not collide with other
-     * entities (cramming is different), getting those is not necessary. This is why we only get entities when they override
+     * entities (cramming is different), getting them is not necessary. This is why we only get entities when they override
      * {@link Entity#isCollidable()} if the reference entity does not override {@link Entity#collidesWith(Entity)}.
      * Note that the returned iterator contains entities that override these methods. This does not mean that these methods
      * always return true.
@@ -50,7 +50,8 @@ public class WorldHelper {
         return entityView.getOtherEntities(collidingEntity, box);
     }
 
-    //Requires chunk.entity_class_groups
+
+    //Requires util.accessors
     public static SectionedEntityCache<Entity> getEntityCacheOrNull(World world) {
         if (world instanceof ClientWorldAccessor) {
             //noinspection unchecked

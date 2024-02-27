@@ -1,12 +1,22 @@
 package me.jellysquid.mods.lithium.common.reflection;
 
+import net.minecraft.block.AbstractBlock;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.entity.Entity;
 import net.minecraft.util.crash.CrashException;
 import net.minecraft.util.crash.CrashReport;
 import net.minecraft.util.crash.CrashReportSection;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
+import net.neoforged.fml.loading.FMLLoader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.WeakHashMap;
+
 public class ReflectionUtil {
+
     public static boolean hasMethodOverride(Class<?> clazz, Class<?> superclass, boolean fallbackResult, String methodName, Class<?>... methodArgs) {
         while (clazz != null && clazz != superclass && superclass.isAssignableFrom(clazz)) {
             try {
@@ -37,5 +47,22 @@ public class ReflectionUtil {
             }
         }
         return false;
+    }
+
+    //How to find the remapped methods:
+    //1) Run in the debugger: System.out.println(FabricLoader.getInstance().getMappingResolver().getNamespaceData("intermediary").methodNames)
+    //2) Ctrl+F for the method name, in this case "onEntityCollision". Make sure to find the correct one.
+    private static final String REMAPPED_ON_ENTITY_COLLISION = FMLLoader.isProduction() ? "entityInside" : "onEntityCollision";
+    private static final WeakHashMap<Class<?>, Boolean> CACHED_IS_ENTITY_TOUCHABLE = new WeakHashMap<>();
+    public static boolean isBlockStateEntityTouchable(BlockState operand) {
+        Class<? extends Block> blockClazz = operand.getBlock().getClass();
+        //Caching results in hashmap as this calculation takes over a second for all blocks together
+        Boolean result = CACHED_IS_ENTITY_TOUCHABLE.get(blockClazz);
+        if (result != null) {
+            return result;
+        }
+        boolean res = ReflectionUtil.hasMethodOverride(blockClazz, AbstractBlock.class, true, REMAPPED_ON_ENTITY_COLLISION, BlockState.class, World.class, BlockPos.class, Entity.class);
+        CACHED_IS_ENTITY_TOUCHABLE.put(blockClazz, res);
+        return res;
     }
 }
