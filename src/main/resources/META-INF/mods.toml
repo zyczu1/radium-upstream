@@ -3,6 +3,9 @@ loaderVersion = "*"
 issueTrackerURL = "https://github.com/Reforged-Hub/radium-upstream/issues"
 license = "LGPL-3.0-only"
 
+[[mixins]]
+config="lithium.mixins.json"
+
 [[mods]]
 modId = "radium"
 version = "${version}"
