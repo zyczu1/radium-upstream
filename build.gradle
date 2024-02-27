@@ -74,6 +74,19 @@ jar {
     from sourceSets.api.output.resourcesDir
 }
 
+loom {
+    runs {
+        client {
+            mods {
+                radium {
+                    sourceSet sourceSets.main
+                    sourceSet sourceSets.api
+                }
+            }
+        }
+    }
+}
+
 repositories {
     allprojects {
         repositories {
@@ -141,12 +154,14 @@ tasks.withType(AbstractArchiveTask) {
 }
 
 //Mixin hotswap
+/*
 afterEvaluate {
     loom.runs.configureEach {
         // https://fabricmc.net/wiki/tutorial:mixin_hotswaps
         vmArg "-javaagent:${ configurations.compileClasspath.find { it.name.contains("sponge-mixin") } }"
     }
 }
+*/
 
 // configure the maven publication
 publishing {
