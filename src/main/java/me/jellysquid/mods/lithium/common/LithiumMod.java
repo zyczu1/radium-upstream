@@ -1,7 +1,7 @@
 package me.jellysquid.mods.lithium.common;
 
 import me.jellysquid.mods.lithium.common.config.LithiumConfig;
-import net.minecraftforge.fml.common.Mod;
+import net.neoforged.fml.common.Mod;
 
 @Mod(LithiumMod.MODID)
 public class LithiumMod {

@@ -1,6 +1,7 @@
 package me.jellysquid.mods.lithium.common.compat.worldedit;
 
-import net.minecraftforge.fml.loading.LoadingModList;
+
+import net.neoforged.fml.loading.LoadingModList;
 
 public class WorldEditCompat {
 

@@ -1,12 +1,12 @@
 package me.jellysquid.mods.lithium.common.compat.fabric_transfer_api_v1;
 
 import net.fabricmc.fabric.api.transfer.v1.item.ItemStorage;
-import net.minecraftforge.fml.loading.LoadingModList;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HopperBlock;
 import net.minecraft.block.entity.HopperBlockEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.neoforged.fml.loading.LoadingModList;
 
 public class FabricTransferApiCompat {
     public static final boolean FABRIC_TRANSFER_API_V_1_PRESENT;

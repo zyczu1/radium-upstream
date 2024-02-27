@@ -5,9 +5,8 @@ import net.minecraft.block.BlockState;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockView;
-import net.minecraftforge.common.extensions.IForgeBlock;
+import net.neoforged.neoforge.common.extensions.IBlockExtension;
 
-import java.lang.reflect.Method;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
@@ -27,6 +26,6 @@ public class BlockClassChecker {
     }
 
     private static Function<Class<?>, Boolean> hasNonstandardImplementation(String name, Class<?>... args) {
-        return blockClass -> ReflectionUtil.hasMethodOverride(blockClass, IForgeBlock.class, false, name, args);
+        return blockClass -> ReflectionUtil.hasMethodOverride(blockClass, IBlockExtension.class, false, name, args);
     }
 }

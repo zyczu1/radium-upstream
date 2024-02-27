@@ -5,8 +5,8 @@ import me.jellysquid.mods.lithium.common.compat.worldedit.WorldEditCompat;
 import net.caffeinemc.caffeineconfig.AbstractCaffeineConfigMixinPlugin;
 import net.caffeinemc.caffeineconfig.CaffeineConfig;
 import net.caffeinemc.caffeineconfig.Option;
-import net.minecraftforge.fml.loading.FMLPaths;
-import net.minecraftforge.fml.loading.LoadingModList;
+import net.neoforged.fml.loading.FMLPaths;
+import net.neoforged.fml.loading.LoadingModList;
 
 import java.io.BufferedReader;
 import java.io.IOException;
