@@ -1,13 +1,7 @@
 import net.fabricmc.loom.task.RemapJarTask
 
 plugins {
-    id 'dev.architectury.loom' version '1.3-SNAPSHOT'
-
-    // Vineflower is a fork of the FernFlower decompiler which contains many enhancements and bug fixes, and generally
-    // produces much better source code. The Minecraft sources can be decompiled using it with the
-    // "genSourcesWithVineflower" task.
-    // (Note: Quiltflower was renamed to Vineflower in early July 2023.)
-    id 'io.github.juuxel.loom-vineflower' version '1.11.0'
+    id 'dev.architectury.loom' version '1.4.380'
 
     // This dependency is only used to determine the state of the Git working tree so that build artifacts can be
     // more easily identified. TODO: Lazily load GrGit via a service only when builds are performed.
@@ -25,13 +19,6 @@ apply plugin: 'net.caffeinemc.mixin-config-plugin'
 
 loom {
     accessWidenerPath = file("src/main/resources/lithium.accesswidener")
-    mixin.defaultRefmapName = "mixins.lithium.refmap.json"
-
-    forge {
-        convertAccessWideners = true
-
-        mixinConfig "lithium.mixins.json"
-    }
 }
 
 group = project.maven_group
@@ -92,6 +79,7 @@ repositories {
         repositories {
             maven { url 'https://jitpack.io' }
             maven { url "https://maven.su5ed.dev/releases" }
+            maven { url "https://maven.neoforged.net" }
             maven { url "https://repo.constructlegacy.ru/public" }
         }
     }
@@ -102,7 +90,7 @@ dependencies {
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
     mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
 
-    forge "net.minecraftforge:forge:${project.loader_version}"
+    neoForge "net.neoforged:neoforge:${project.loader_version}"
     modCompileOnly "dev.su5ed.sinytra.fabric-api:fabric-transfer-api-v1:${project.fabric_version}" // Ye
 
     compileOnly 'net.caffeinemc:mixin-config-plugin:1.0-SNAPSHOT'
@@ -145,6 +133,10 @@ def getVersionMetadata() {
 
     // No tracking information could be found about the build
     return "+unknown"
+}
+
+remapJar {
+    atAccessWideners.add "lithium.accesswidener"
 }
 
 //make builds more reproducible

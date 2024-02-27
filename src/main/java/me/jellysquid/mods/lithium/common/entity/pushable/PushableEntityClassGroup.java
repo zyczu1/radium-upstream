@@ -2,7 +2,6 @@ package me.jellysquid.mods.lithium.common.entity.pushable;
 
 import me.jellysquid.mods.lithium.common.entity.EntityClassGroup;
 import me.jellysquid.mods.lithium.common.reflection.ReflectionUtil;
-import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 import cpw.mods.modlauncher.api.INameMappingService;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -10,6 +9,8 @@ import net.minecraft.entity.boss.dragon.EnderDragonEntity;
 import net.minecraft.entity.decoration.ArmorStandEntity;
 import net.minecraft.entity.passive.BatEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.neoforged.fml.loading.FMLLoader;
+import net.neoforged.fml.util.ObfuscationReflectionHelper;
 
 public class PushableEntityClassGroup {
 
@@ -29,8 +30,9 @@ public class PushableEntityClassGroup {
     public static final EntityClassGroup MAYBE_PUSHABLE;
 
     static {
-        String remapped_isClimbing = ObfuscationReflectionHelper.remapName(INameMappingService.Domain.METHOD, "m_6147_");
-        String remapped_isPushable = ObfuscationReflectionHelper.remapName(INameMappingService.Domain.METHOD, "m_6094_");
+        // TODO Remove when migrated to Mojmap
+        String remapped_isClimbing = FMLLoader.isProduction() ? "onClimbable" : "isClimbing";
+        String remapped_isPushable = "isPushable";
         CACHABLE_UNPUSHABILITY = new EntityClassGroup(
                 (Class<?> entityClass) -> {
                     if (LivingEntity.class.isAssignableFrom(entityClass) && !PlayerEntity.class.isAssignableFrom(entityClass)) {

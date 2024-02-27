@@ -14,13 +14,13 @@ import java.util.Set;
  */
 @Mixin(PointOfInterestTypes.class)
 public class PointOfInterestTypesMixin {
-    @Shadow
-    @Final
-    protected static Set<BlockState> f_218067_;
+    //@Shadow
+    //@Final
+    //protected static Set<BlockState> f_218067_;
 
     static {
         // POI_STATES_TO_TYPE = new Reference2ReferenceOpenHashMap<>(POI_STATES_TO_TYPE); TODO why it broke?
 
-        PointOfInterestTypeHelper.init(f_218067_);
+        // PointOfInterestTypeHelper.init(f_218067_);
     }
 }

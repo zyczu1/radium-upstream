@@ -5,8 +5,6 @@ import me.jellysquid.mods.lithium.common.ai.pathing.BlockStatePathingCache;
 import me.jellysquid.mods.lithium.common.ai.pathing.PathNodeCache;
 import me.jellysquid.mods.lithium.common.entity.FluidCachingEntity;
 import me.jellysquid.mods.lithium.common.reflection.ReflectionUtil;
-import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
-import cpw.mods.modlauncher.api.INameMappingService;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
@@ -15,6 +13,7 @@ import net.minecraft.registry.tag.FluidTags;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.ChunkSection;
+import net.neoforged.fml.loading.FMLLoader;
 
 import java.util.ArrayList;
 
@@ -118,7 +117,7 @@ public class BlockStateFlags {
             //How to find the remapped methods:
             //1) Run in the debugger: System.out.println(FabricLoader.getInstance().getMappingResolver().getNamespaceData("intermediary").methodNames)
             //2) Ctrl+F for the method name, in this case "onEntityCollision". Make sure to find the correct one.
-            private final String remapped_onEntityCollision = ObfuscationReflectionHelper.remapName(INameMappingService.Domain.METHOD, "m_7892_");
+            private final String remapped_onEntityCollision = FMLLoader.isProduction() ? "entityInside" : "onEntityCollision";
             @Override
             public boolean test(BlockState operand) {
                 return ReflectionUtil.hasMethodOverride(operand.getBlock().getClass(), AbstractBlock.class, true, this.remapped_onEntityCollision, BlockState.class, World.class, BlockPos.class, Entity.class);
