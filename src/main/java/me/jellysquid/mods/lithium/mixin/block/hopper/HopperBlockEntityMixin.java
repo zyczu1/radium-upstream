@@ -654,7 +654,7 @@ public abstract class HopperBlockEntityMixin extends BlockEntity implements Hopp
     }
 
     @SuppressWarnings({"MixinAnnotationTarget", "UnresolvedMixinReference"})
-    @Inject(method = "setCachedState(Lnet/minecraft/block/BlockState;)V", at = @At("HEAD"))
+    @Inject(method = {"setCachedState(Lnet/minecraft/block/BlockState;)V","setBlockState(Lnet/minecraft/world/level/block/state/BlockState;)V"}, at = @At("HEAD"), remap = false)
     private void invalidateOnSetCachedState(BlockState state, CallbackInfo ci) {
         if (this.world != null && !this.world.isClient() && state.get(HopperBlock.FACING) != this.getCachedState().get(HopperBlock.FACING)) {
             this.invalidateCachedData();

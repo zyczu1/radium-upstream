@@ -26,8 +26,9 @@ public abstract class ChestBoatEntityMixin extends Entity {
 
     @SuppressWarnings({"MixinAnnotationTarget", "UnresolvedMixinReference"})
     @Redirect(
-            method = "tickRiding()V",
-            at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;tickRiding()V")
+            method = {"tickRiding()V", "rideTick()V"},
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;tickRiding()V", remap = true),
+            remap = false
     )
     private void tickRidingSummarizeMovementNotifications(Entity entity) {
         EntityChangeListener changeListener = ((EntityAccessor) this).getChangeListener();

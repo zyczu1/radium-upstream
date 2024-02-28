@@ -21,7 +21,6 @@ public class HideInHomeTaskMixin {
     @Redirect(
             method = {
                     "method_46979",
-                    "m_289100_"
             },
             at = @At(
                     value = "INVOKE",
@@ -35,7 +34,6 @@ public class HideInHomeTaskMixin {
     @Redirect(
             method = {
                     "method_46978",
-                    "m_289098_"
             },
             at = @At(
                     value = "INVOKE",
