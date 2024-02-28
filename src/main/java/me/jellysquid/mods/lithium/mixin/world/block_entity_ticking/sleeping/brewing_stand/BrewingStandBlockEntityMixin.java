@@ -81,7 +81,7 @@ public class BrewingStandBlockEntityMixin extends BlockEntity implements Sleepin
     }
 
     @SuppressWarnings({"MixinAnnotationTarget", "UnresolvedMixinReference"})
-    @Inject(method = "markDirty()V", at = @At("RETURN"))
+    @Inject(method = {"markDirty()V","setChanged()V"}, at = @At("RETURN"), remap = false)
     private void wakeOnMarkDirty(CallbackInfo ci) {
         if (this.isSleeping() && this.world != null && !this.world.isClient) {
             this.wakeUpNow();

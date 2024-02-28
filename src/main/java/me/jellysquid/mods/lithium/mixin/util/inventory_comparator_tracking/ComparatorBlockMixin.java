@@ -31,7 +31,8 @@ public abstract class ComparatorBlockMixin extends AbstractRedstoneGateBlock {
                     "onBlockAdded(Lnet/minecraft/block/BlockState;Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/BlockState;Z)V",
                     "onPlace(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;Z)V"
             },
-            at = @At("RETURN")
+            at = @At("RETURN"),
+            remap = false
     )
     private void notifyOnBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean notify, CallbackInfo ci) {
         if (!oldState.isOf(Blocks.COMPARATOR)) {
