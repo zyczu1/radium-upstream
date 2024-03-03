@@ -3,38 +3,39 @@ package me.jellysquid.mods.lithium.mixin.entity.collisions.fluid;
 import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
 import me.jellysquid.mods.lithium.common.block.BlockCountingSection;
 import me.jellysquid.mods.lithium.common.block.BlockStateFlags;
-import me.jellysquid.mods.lithium.common.block.TrackedBlockStatePredicate;
 import me.jellysquid.mods.lithium.common.entity.FluidCachingEntity;
 import me.jellysquid.mods.lithium.common.util.Pos;
 import net.minecraft.entity.Entity;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.registry.tag.FluidTags;
-import net.minecraft.registry.tag.TagKey;
 import net.minecraft.util.math.Box;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.ChunkSection;
+import net.minecraftforge.fluids.FluidType;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 @Mixin(Entity.class)
-public abstract class EntityMixin implements FluidCachingEntity { // TODO aready patched by forge
-
-    /*@Shadow
+public abstract class EntityMixin implements FluidCachingEntity {
+    @Shadow
     public abstract Box getBoundingBox();
 
     @Shadow
     public World world;
 
     @Shadow
-    protected Object2DoubleMap<TagKey<Fluid>> fluidHeight;
+    protected Object2DoubleMap<FluidType> forgeFluidTypeHeight;
 
+    /**
+     * @author 2No2Name, embeddedt
+     * @reason Skip computing fluid heights if we know none of the relevant chunk sections contain any fluids.
+     */
     @Inject(
-            method = "updateMovementInFluid(Lnet/minecraft/registry/tag/TagKey;D)Z",
+            method = "updateFluidHeightAndDoFluidPushing",
             at = @At(
                     value = "INVOKE",
                     target = "Lnet/minecraft/entity/Entity;isPushedByFluids()Z",
@@ -43,15 +44,7 @@ public abstract class EntityMixin implements FluidCachingEntity { // TODO aready
             cancellable = true,
             locals = LocalCapture.CAPTURE_FAILHARD
     )
-    public void tryShortcutFluidPushing(TagKey<Fluid> tag, double speed, CallbackInfoReturnable<Boolean> cir, Box box, int x1, int x2, int y1, int y2, int z1, int z2, double zero) {
-        TrackedBlockStatePredicate blockStateFlag;
-        if (tag == FluidTags.WATER) {
-            blockStateFlag = BlockStateFlags.WATER;
-        } else if (tag == FluidTags.LAVA) {
-            blockStateFlag = BlockStateFlags.LAVA;
-        } else {
-            return;
-        }
+    public void tryShortcutFluidPushing(CallbackInfo ci, Box box, int x1, int x2, int y1, int y2, int z1, int z2, double zero) {
         int chunkX1 = x1 >> 4;
         int chunkZ1 = z1 >> 4;
         int chunkX2 = ((x2 - 1) >> 4);
@@ -63,7 +56,7 @@ public abstract class EntityMixin implements FluidCachingEntity { // TODO aready
                 Chunk chunk = this.world.getChunk(chunkX, chunkZ);
                 for (int chunkYIndex = chunkYIndex1; chunkYIndex <= chunkYIndex2; chunkYIndex++) {
                     ChunkSection section = chunk.getSectionArray()[chunkYIndex];
-                    if (((BlockCountingSection) section).mayContainAny(blockStateFlag)) {
+                    if (((BlockCountingSection) section).mayContainAny(BlockStateFlags.ANY_FLUID)) {
                         //fluid found, cannot skip code
                         return;
                     }
@@ -71,8 +64,22 @@ public abstract class EntityMixin implements FluidCachingEntity { // TODO aready
             }
         }
 
-        //side effects of not finding a fluid:
-        this.fluidHeight.put(tag, 0.0);
-        cir.setReturnValue(false);
-    }*/
+        //side effects of not finding a fluid.
+        if(!this.forgeFluidTypeHeight.isEmpty()) {
+            // only call clear() if map contains anything, because array maps use naive clear
+            this.forgeFluidTypeHeight.clear();
+        }
+        ci.cancel();
+    }
+
+    /**
+     * @author embeddedt
+     * @reason Skip running expensive logic from Forge if the entity is known not to be in a fluid.
+     */
+    @Inject(method = "updateWaterState", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;checkWaterState()V", shift = At.Shift.AFTER), cancellable = true)
+    private void earlyExitIfTouchingNone(CallbackInfoReturnable<Boolean> cir) {
+        if(this.forgeFluidTypeHeight.isEmpty()) {
+            cir.setReturnValue(false);
+        }
+    }
 }
