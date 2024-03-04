@@ -1,26 +1,19 @@
 package me.jellysquid.mods.lithium.mixin.ai.poi;
 
-import me.jellysquid.mods.lithium.common.world.interests.types.PointOfInterestTypeHelper;
-import net.minecraft.block.BlockState;
-import net.minecraft.world.poi.PointOfInterestTypes;
-import org.spongepowered.asm.mixin.Final;
+import it.unimi.dsi.fastutil.objects.Reference2ReferenceOpenHashMap;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.ModifyArg;
 
-import java.util.Set;
+import java.util.Map;
 
 /**
  * Replaces the backing map type with a faster collection type which uses reference equality.
  */
-@Mixin(PointOfInterestTypes.class)
+@Mixin(targets = { "net/minecraftforge/registries/GameData$PointOfInterestTypeCallbacks" })
 public class PointOfInterestTypesMixin {
-    @Shadow
-    @Final
-    protected static Set<BlockState> f_218067_;
-
-    static {
-        // POI_STATES_TO_TYPE = new Reference2ReferenceOpenHashMap<>(POI_STATES_TO_TYPE); TODO why it broke?
-
-        PointOfInterestTypeHelper.init(f_218067_);
+    @ModifyArg(method = "onCreate", at = @At(value = "INVOKE", target = "Lnet/minecraftforge/registries/IForgeRegistryInternal;setSlaveMap(Lnet/minecraft/util/Identifier;Ljava/lang/Object;)V"), index = 1)
+    private Object changeMapType(Object obj) {
+        return new Reference2ReferenceOpenHashMap<>((Map<?, ?>)obj);
     }
 }
