@@ -1,6 +1,8 @@
 package me.jellysquid.mods.lithium.mixin.entity.collisions.fluid;
 
 import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
+import it.unimi.dsi.fastutil.objects.Object2DoubleMaps;
+import it.unimi.dsi.fastutil.objects.ObjectIterator;
 import me.jellysquid.mods.lithium.common.block.BlockCountingSection;
 import me.jellysquid.mods.lithium.common.block.BlockStateFlags;
 import me.jellysquid.mods.lithium.common.entity.FluidCachingEntity;
@@ -12,12 +14,15 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.ChunkSection;
 import net.minecraftforge.fluids.FluidType;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
+
+import java.util.function.BiPredicate;
 
 @Mixin(Entity.class)
 public abstract class EntityMixin implements FluidCachingEntity {
@@ -80,6 +85,39 @@ public abstract class EntityMixin implements FluidCachingEntity {
     private void earlyExitIfTouchingNone(CallbackInfoReturnable<Boolean> cir) {
         if(this.forgeFluidTypeHeight.isEmpty()) {
             cir.setReturnValue(false);
+        }
+    }
+
+    /**
+     * @author embeddedt
+     * @reason early-exit for entities with no fluids (the likely case), avoid streams
+     */
+    @Overwrite
+    public final boolean isInFluidType(BiPredicate<FluidType, Double> predicate, boolean forAllTypes) {
+        if(this.forgeFluidTypeHeight.isEmpty()) {
+            return false;
+        } else {
+            ObjectIterator<Object2DoubleMap.Entry<FluidType>> it = Object2DoubleMaps.fastIterator(this.forgeFluidTypeHeight);
+            if(forAllTypes) {
+                // Check if all fluids match
+                while (it.hasNext()) {
+                    var entry = it.next();
+                    if(!predicate.test(entry.getKey(), entry.getDoubleValue())) {
+                        return false;
+                    }
+                }
+                return true;
+            } else {
+                // Check if any fluid matches
+                while (it.hasNext()) {
+                    var entry = it.next();
+                    if(predicate.test(entry.getKey(), entry.getDoubleValue())) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+
         }
     }
 }
