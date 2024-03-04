@@ -6,15 +6,15 @@ import net.minecraft.util.collection.Pool;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.WorldAccess;
 import net.minecraft.world.biome.SpawnSettings;
-import net.minecraftforge.event.ForgeEventFactory;
-import net.minecraftforge.event.level.LevelEvent;
+import net.neoforged.neoforge.event.EventHooks;
+import net.neoforged.neoforge.event.level.LevelEvent;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
-@Mixin(ForgeEventFactory.class)
+@Mixin(EventHooks.class)
 public class ForgeEventFactoryMixin {
     /**
      * @author embeddedt

@@ -1,7 +1,7 @@
 package me.jellysquid.mods.lithium.mixin.collections.mob_spawning;
 
 import me.jellysquid.mods.lithium.common.world.PotentialSpawnsExtended;
-import net.minecraftforge.event.level.LevelEvent;
+import net.neoforged.neoforge.event.level.LevelEvent;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
