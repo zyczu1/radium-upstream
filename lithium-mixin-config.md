@@ -145,7 +145,7 @@ Optimizations related to blocks
 FluidStates store directly whether they are empty  
   
 ### `mixin.block.hopper`
-(default: `true`)  
+(default: `false`)  
 Reduces hopper lag using caching, notification systems and BlockEntity sleeping  
 Requirements:
 - `mixin.util.entity_movement_tracking=true`
@@ -479,7 +479,7 @@ Various world related optimizations
 Various BlockEntity ticking optimizations  
   
 ### `mixin.world.block_entity_ticking.sleeping`
-(default: `true`)  
+(default: `false`)  
 Allows BlockEntities to sleep, meaning they are no longer ticked until woken up, e.g. by updates to their inventory or block state  
   
 ### `mixin.world.block_entity_ticking.sleeping.brewing_stand`
