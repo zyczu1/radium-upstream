@@ -2,13 +2,15 @@ package me.jellysquid.mods.lithium.common.entity.pushable;
 
 import me.jellysquid.mods.lithium.common.entity.EntityClassGroup;
 import me.jellysquid.mods.lithium.common.reflection.ReflectionUtil;
-import net.fabricmc.loader.api.FabricLoader;
+import cpw.mods.modlauncher.api.INameMappingService;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.boss.dragon.EnderDragonEntity;
 import net.minecraft.entity.decoration.ArmorStandEntity;
 import net.minecraft.entity.passive.BatEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.neoforged.fml.loading.FMLLoader;
+import net.neoforged.fml.util.ObfuscationReflectionHelper;
 
 public class PushableEntityClassGroup {
 
@@ -28,8 +30,9 @@ public class PushableEntityClassGroup {
     public static final EntityClassGroup MAYBE_PUSHABLE;
 
     static {
-        String remapped_isClimbing = FabricLoader.getInstance().getMappingResolver().mapMethodName("intermediary", "net.minecraft.class_1309", "method_6101", "()Z");
-        String remapped_isPushable = FabricLoader.getInstance().getMappingResolver().mapMethodName("intermediary", "net.minecraft.class_1297", "method_5810", "()Z");
+        // TODO Remove when migrated to Mojmap
+        String remapped_isClimbing = FMLLoader.isProduction() ? "onClimbable" : "isClimbing";
+        String remapped_isPushable = "isPushable";
         CACHABLE_UNPUSHABILITY = new EntityClassGroup(
                 (Class<?> entityClass) -> {
                     if (LivingEntity.class.isAssignableFrom(entityClass) && !PlayerEntity.class.isAssignableFrom(entityClass)) {

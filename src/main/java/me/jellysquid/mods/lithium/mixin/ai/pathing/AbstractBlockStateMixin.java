@@ -20,8 +20,8 @@ public abstract class AbstractBlockStateMixin implements BlockStatePathingCache 
     private PathNodeType pathNodeType = null;
     private PathNodeType pathNodeTypeNeighbor = null;
 
-    @Inject(method = "initShapeCache()V", at = @At("RETURN"))
-    private void init(CallbackInfo ci) {
+    @Override
+    public void lithium$initPathCache() {
         // Reset the cached path node types, to ensure they are re-calculated.
         this.pathNodeType = null;
         this.pathNodeTypeNeighbor = null;

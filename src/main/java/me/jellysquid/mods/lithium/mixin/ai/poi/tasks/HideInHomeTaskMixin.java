@@ -19,7 +19,9 @@ import java.util.function.Predicate;
 public class HideInHomeTaskMixin {
 
     @Redirect(
-            method = "method_46979",
+            method = {
+                    "method_46979",
+            },
             at = @At(
                     value = "INVOKE",
                     target = "Lnet/minecraft/world/poi/PointOfInterestStorage;getPosition(Ljava/util/function/Predicate;Ljava/util/function/Predicate;Lnet/minecraft/world/poi/PointOfInterestStorage$OccupationStatus;Lnet/minecraft/util/math/BlockPos;ILnet/minecraft/util/math/random/Random;)Ljava/util/Optional;"
@@ -30,7 +32,9 @@ public class HideInHomeTaskMixin {
     }
 
     @Redirect(
-            method = "method_46978",
+            method = {
+                    "method_46978",
+            },
             at = @At(
                     value = "INVOKE",
                     target = "Lnet/minecraft/world/poi/PointOfInterestStorage;getPosition(Ljava/util/function/Predicate;Ljava/util/function/Predicate;Lnet/minecraft/util/math/BlockPos;ILnet/minecraft/world/poi/PointOfInterestStorage$OccupationStatus;)Ljava/util/Optional;"

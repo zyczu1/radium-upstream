@@ -13,7 +13,8 @@
                 @MixinConfigDependency(dependencyPath = "mixin.util.block_entity_retrieval"),
                 @MixinConfigDependency(dependencyPath = "mixin.util.inventory_change_listening"),
                 @MixinConfigDependency(dependencyPath = "mixin.util.item_stack_tracking")
-        }
+        },
+        enabled = false
 )
 package me.jellysquid.mods.lithium.mixin.block.hopper;
 

@@ -19,7 +19,7 @@ public abstract class ChestBlockEntityMixin extends LootableContainerBlockEntity
     }
 
     @SuppressWarnings("deprecation")
-    @Intrinsic
+    // @Intrinsic
     @Override
     public void setCachedState(BlockState state) {
         super.setCachedState(state);
