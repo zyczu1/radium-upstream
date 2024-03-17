@@ -9,10 +9,13 @@ import net.minecraft.registry.tag.TagKey;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.FluidType;
+import org.apache.commons.lang3.tuple.MutableTriple;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
@@ -22,38 +25,44 @@ public abstract class EntityMixin implements BlockCacheProvider {
     public abstract Box getBoundingBox();
 
     @Shadow
-    protected Object2DoubleMap<TagKey<Fluid>> fluidHeight;
-
-    @Shadow
     public abstract World getWorld();
 
+    @Shadow
+    protected Object2DoubleMap<FluidType> forgeFluidTypeHeight;
+
     @Inject(
-            method = "updateMovementInFluid",
+            method = "updateFluidHeightAndDoFluidPushing",
             at = @At("HEAD"),
             cancellable = true
     )
-    private void skipFluidSearchUsingCache(TagKey<Fluid> fluid, double speed, CallbackInfoReturnable<Boolean> cir) {
+    private void skipFluidSearchUsingCache(CallbackInfo ci) {
         BlockCache bc = this.getUpdatedBlockCache((Entity)(Object)this);
-        double fluidHeight = bc.getStationaryFluidHeightOrDefault(fluid, -1d);
-        if (fluidHeight != -1d) {
-            this.fluidHeight.put(fluid, fluidHeight); //Note: If the region is unloaded in target method, this still puts 0. However, default return value is 0, and vanilla doesn't use any method that reveals this difference.
-            boolean touchingFluid = fluidHeight != 0d;
-            cir.setReturnValue(touchingFluid);
+        var fluidMap = bc.getCachedFluidHeightMap();
+        if (fluidMap != null) {
+            // Avoid calling putAll when we know the map is empty
+            if(!fluidMap.isEmpty()) {
+                //Note: If the region is unloaded in target method, this still puts 0. However, default return value is 0, and vanilla doesn't use any method that reveals this difference.
+                this.forgeFluidTypeHeight.putAll(fluidMap);
+            }
+            // Skip expensive logic
+            ci.cancel();
         }
     }
 
-    @SuppressWarnings("InvalidInjectorMethodSignature")
     @Inject(
-            method = "updateMovementInFluid", locals = LocalCapture.CAPTURE_FAILHARD,
+            method = "lambda$updateFluidHeightAndDoFluidPushing$26",
             at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/Vec3d;length()D", ordinal = 0, shift = At.Shift.BEFORE)
     )
-    private void cacheFluidSearchResult(TagKey<Fluid> fluid, double speed, CallbackInfoReturnable<Boolean> cir, Box box, int i1, int i2, int i3, int i4, int i5, int i6, double fluidHeight, boolean isPushedbyFluids, boolean touchingFluid, Vec3d fluidPush, int i7) {
+    private void cacheFluidSearchResult(FluidType type, MutableTriple<Double, Vec3d, Integer>  interim, CallbackInfo ci) {
         BlockCache bc = this.getBlockCache();
-        if (bc.isTracking() && fluidPush.lengthSquared() == 0d) {
+        if (bc.isTracking() && interim.getMiddle().lengthSquared() == 0d) {
+            double fluidHeight = interim.getLeft();
+            /* TODO Radium: we do not have access to that local inside the lambda
             if (touchingFluid == (fluidHeight == 0d)) {
                 throw new IllegalArgumentException("Expected fluid touching IFF fluid height is not 0! Fluid height: " + fluidHeight + " Touching fluid: " + touchingFluid + " Fluid Tag: " + fluid);
             }
-            bc.setCachedFluidHeight(fluid, fluidHeight);
+             */
+            bc.setCachedFluidHeight(type, fluidHeight);
         }
     }
 }
