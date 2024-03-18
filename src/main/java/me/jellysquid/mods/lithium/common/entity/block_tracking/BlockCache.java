@@ -4,10 +4,8 @@ import it.unimi.dsi.fastutil.objects.Object2DoubleArrayMap;
 import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
 import me.jellysquid.mods.lithium.common.block.BlockStateFlags;
 import net.minecraft.entity.Entity;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.registry.tag.TagKey;
 import net.minecraft.util.math.Box;
-import net.minecraftforge.fluids.FluidType;
+import net.neoforged.neoforge.fluids.FluidType;
 
 public final class BlockCache {
     // To avoid slowing down setblock operations, only start caching after 3 Seconds = 60 gameticks with N accesses per tick
