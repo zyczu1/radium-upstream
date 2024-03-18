@@ -63,7 +63,7 @@ jar {
 
 loom {
     runs {
-        client {
+        configureEach {
             mods {
                 radium {
                     sourceSet sourceSets.main
