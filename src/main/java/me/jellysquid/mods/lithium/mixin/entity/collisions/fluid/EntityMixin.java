@@ -73,7 +73,8 @@ public abstract class EntityMixin implements FluidCachingEntity, IEntityExtensio
                     shift = At.Shift.BEFORE
             ),
             cancellable = true,
-            locals = LocalCapture.CAPTURE_FAILHARD
+            locals = LocalCapture.CAPTURE_FAILHARD,
+            require = 0
     )
     public void tryShortcutFluidPushing(CallbackInfo ci, Box box, int x1, int x2, int y1, int y2, int z1, int z2, double zero) {
         int chunkX1 = x1 >> 4;
