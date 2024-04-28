@@ -86,7 +86,7 @@ public abstract class ChunkTicketManagerMixin {
             ),
             locals = LocalCapture.CAPTURE_FAILHARD
     )
-    private void updateSetMinExpiryTime(long position, ChunkTicket<?> ticket, CallbackInfo ci, SortedArraySet<ChunkTicket<?>> sortedArraySet, int i) {
+    private void updateSetMinExpiryTime(long position, ChunkTicket<?> ticket, CallbackInfo ci, SortedArraySet<?> sortedArraySet, int i) {
         if (canExpire(ticket) && sortedArraySet instanceof ChunkTicketSortedArraySet<?> chunkTickets) {
             chunkTickets.addExpireTime(this.age + ticket.getType().getExpiryTicks());
         }

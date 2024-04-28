@@ -34,7 +34,7 @@ public abstract class EntityMixin implements FluidCachingEntity, IEntityExtensio
     public abstract Box getBoundingBox();
 
     @Shadow
-    public World world;
+    private World world;
 
     @Shadow
     protected Object2DoubleMap<FluidType> forgeFluidTypeHeight;
@@ -88,7 +88,7 @@ public abstract class EntityMixin implements FluidCachingEntity, IEntityExtensio
                 Chunk chunk = this.world.getChunk(chunkX, chunkZ);
                 for (int chunkYIndex = chunkYIndex1; chunkYIndex <= chunkYIndex2; chunkYIndex++) {
                     ChunkSection section = chunk.getSectionArray()[chunkYIndex];
-                    if (((BlockCountingSection) section).mayContainAny(BlockStateFlags.ANY_FLUID)) {
+                    if (((BlockCountingSection) section).lithium$mayContainAny(BlockStateFlags.ANY_FLUID)) {
                         //fluid found, cannot skip code
                         return;
                     }

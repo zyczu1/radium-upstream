@@ -2,7 +2,6 @@ package me.jellysquid.mods.lithium.common.entity.pushable;
 
 import me.jellysquid.mods.lithium.common.entity.EntityClassGroup;
 import me.jellysquid.mods.lithium.common.reflection.ReflectionUtil;
-import cpw.mods.modlauncher.api.INameMappingService;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.boss.dragon.EnderDragonEntity;
