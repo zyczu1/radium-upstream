@@ -20,22 +20,6 @@ mixin.gen.biome_noise_cache=false
 (default: `true`)  
 Mob AI optimizations  
   
-### `mixin.ai.nearby_entity_tracking`
-(default: `false`)  
-Event-based system for tracking nearby entities.
-  
-Requirements:
-- `mixin.util.entity_section_position=true`
-- `mixin.util.accessors=true`  
-  
-### `mixin.ai.nearby_entity_tracking.goals`
-(default: `true`)  
-A number of AI goals which query for nearby entities in the world every tick will use the event-based
-system for tracking nearby entities. In other words, instead of entities constantly polling to see if
-other entities are nearby, they will instead be notified only occasionally when such an entity enters
-their range.
-  
-  
 ### `mixin.ai.pathing`
 (default: `true`)  
 A faster code path is used for determining what kind of path-finding node type is associated with a
@@ -254,8 +238,7 @@ Various entity collision optimizations
 (default: `true`)  
 Skips being pushed by fluids when the nearby chunk sections do not contain this fluid  
 Requirements:
-- `mixin.util.block_tracking=true`
-- `mixin.experimental.entity.block_caching.fluid_pushing=false`  
+- `mixin.util.block_tracking=true`  
   
 ### `mixin.entity.collisions.intersection`
 (default: `true`)  
@@ -276,18 +259,6 @@ In chunks with many mobs in ladders a separate list of pushable entities for cra
 Requirements:
 - `mixin.chunk.entity_class_groups=true`  
   
-### `mixin.entity.data_tracker`
-(default: `true`)  
-Various entity data tracker optimizations  
-  
-### `mixin.entity.data_tracker.no_locks`
-(default: `true`)  
-Remove unnecessary locking when accessing the data tracker  
-  
-### `mixin.entity.data_tracker.use_arrays`
-(default: `true`)  
-Data trackers use a custom optimized entry map  
-  
 ### `mixin.entity.fast_elytra_check`
 (default: `true`)  
 Skip repeatedly writing to the data tracker that an entity is not flying  
@@ -303,10 +274,6 @@ Skip checking whether an entity is inside powder snow for movement speed slowdow
 ### `mixin.entity.fast_retrieval`
 (default: `true`)  
 Access entities faster when accessing a relatively small number of entity sections  
-  
-### `mixin.entity.hopper_minecart`
-(default: `true`)  
-Hopper minecarts search for item entities faster by combining multiple item entity searches. Also eliminates duplicated item entity pickup attempts  
   
 ### `mixin.entity.inactive_navigations`
 (default: `true`)  
@@ -353,12 +320,6 @@ Requirements:
 ### `mixin.experimental.entity.block_caching.fire_lava_touching`
 (default: `true`)  
 Skip searching for fire or lava in the burn time countdown logic when they are not on fire and the result does not make a difference. Also use the block listening system to cache whether the entity is touching fire or lava.  
-  
-### `mixin.experimental.entity.block_caching.fluid_pushing`
-(default: `true`)  
-Use the block listening system to cache entity fluid interaction when not touching fluid currents.  
-Requirements:
-- `mixin.util.block_tracking.block_listening=true`  
   
 ### `mixin.experimental.entity.block_caching.suffocation`
 (default: `true`)  

@@ -55,7 +55,7 @@ public class WorldHelper {
     public static SectionedEntityCache<Entity> getEntityCacheOrNull(World world) {
         if (world instanceof ClientWorldAccessor) {
             //noinspection unchecked
-            return ((ClientEntityManagerAccessor<Entity>) ((ClientWorldAccessor) world).getEntityManager()).getCache();
+            return ((ClientEntityManagerAccessor<Entity>) ((ClientWorldAccessor) world).lithium$getEntityManager()).getCache();
         } else if (world instanceof ServerWorldAccessor) {
             //noinspection unchecked
             return ((ServerEntityManagerAccessor<Entity>) ((ServerWorldAccessor) world).getEntityManager()).getCache();
@@ -69,7 +69,7 @@ public class WorldHelper {
             //noinspection unchecked
             TypeFilterableList<Entity> allEntities = ((EntityTrackingSectionAccessor<Entity>) section).getCollection();
             //noinspection unchecked
-            Collection<Entity> entitiesOfType = ((ClassGroupFilterableList<Entity>) allEntities).getAllOfGroupType(entityClassGroup);
+            Collection<Entity> entitiesOfType = ((ClassGroupFilterableList<Entity>) allEntities).lithium$getAllOfGroupType(entityClassGroup);
             if (!entitiesOfType.isEmpty()) {
                 for (Entity entity : entitiesOfType) {
                     if (entity.getBoundingBox().intersects(box) && !entity.isSpectator() && entity != collidingEntity) {
@@ -85,7 +85,7 @@ public class WorldHelper {
 
     public static List<Entity> getPushableEntities(World world, SectionedEntityCache<Entity> cache, Entity except, Box box, EntityPushablePredicate<? super Entity> entityPushablePredicate) {
         ArrayList<Entity> entities = new ArrayList<>();
-        cache.forEachInBox(box, section -> ((ClimbingMobCachingSection) section).collectPushableEntities(world, except, box, entityPushablePredicate, entities));
+        cache.forEachInBox(box, section -> ((ClimbingMobCachingSection) section).lithium$collectPushableEntities(world, except, box, entityPushablePredicate, entities));
         return entities;
     }
 
@@ -96,10 +96,10 @@ public class WorldHelper {
         return localX > 0 && localZ > 0 && localX < 15 && localZ < 15;
     }
 
-    public static boolean areNeighborsWithinSameChunkSection(BlockPos pos) {
-        int localX = pos.getX() & 15;
-        int localY = pos.getY() & 15;
-        int localZ = pos.getZ() & 15;
+    public static boolean areNeighborsWithinSameChunkSection(int x, int y, int z) {
+        int localX = x & 15;
+        int localY = y & 15;
+        int localZ = z & 15;
 
         return localX > 0 && localY > 0 && localZ > 0 && localX < 15 && localY < 15 && localZ < 15;
     }

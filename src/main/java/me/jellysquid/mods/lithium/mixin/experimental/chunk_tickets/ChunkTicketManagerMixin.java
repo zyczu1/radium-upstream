@@ -41,7 +41,7 @@ public abstract class ChunkTicketManagerMixin {
         return true;
     }
 
-    @Redirect(method = { "lambda$getTickets$5" }, at = @At(value = "INVOKE", target = "Lnet/minecraft/util/collection/SortedArraySet;create(I)Lnet/minecraft/util/collection/SortedArraySet;"))
+    @Redirect(method = { "method_14041", "m_183922_", "lambda$getTickets$6" }, at = @At(value = "INVOKE", target = "Lnet/minecraft/util/collection/SortedArraySet;create(I)Lnet/minecraft/util/collection/SortedArraySet;"))
     private static SortedArraySet<ChunkTicket<?>> useLithiumSortedArraySet(int initialCapacity) { // TODO fix redirect method
         return new ChunkTicketSortedArraySet<>(initialCapacity);
     }
@@ -86,7 +86,7 @@ public abstract class ChunkTicketManagerMixin {
             ),
             locals = LocalCapture.CAPTURE_FAILHARD
     )
-    private void updateSetMinExpiryTime(long position, ChunkTicket<?> ticket, CallbackInfo ci, SortedArraySet<ChunkTicket<?>> sortedArraySet, int i) {
+    private void updateSetMinExpiryTime(long position, ChunkTicket<?> ticket, CallbackInfo ci, SortedArraySet<?> sortedArraySet, int i) {
         if (canExpire(ticket) && sortedArraySet instanceof ChunkTicketSortedArraySet<?> chunkTickets) {
             chunkTickets.addExpireTime(this.age + ticket.getType().getExpiryTicks());
         }
