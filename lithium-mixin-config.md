@@ -198,6 +198,10 @@ Uses fastutil hashmaps for BlockEntity tickers
 (default: `true`)  
 Uses fastutil hashmaps for AI memories and sensors  
   
+### `mixin.collections.chunk_tickets`
+(default: `true`)  
+Improves the chunk ticket sets by speeding up the removal of chunk tickets  
+  
 ### `mixin.collections.entity_by_type`
 (default: `true`)  
 Uses fastutil hashmaps for type specific entity lists  
@@ -291,10 +295,6 @@ Skips repeated checks whether the equipment of an entity changed. Instead equipm
 (default: `false`)  
 Various experimental optimizations  
   
-### `mixin.experimental.chunk_tickets`
-(default: `true`)  
-Only check positions with expiring tickets during ticket expiration. Can cause reordering of chunk unloading when unloading more than approximately two billion chunks at once.  
-  
 ### `mixin.experimental.entity`
 (default: `true`)  
 Experimental entity optimizations  
@@ -373,6 +373,14 @@ Avoid indirection and inline several functions in Direction, Axis and Box code
 ### `mixin.math.sine_lut`
 (default: `true`)  
 Reduces the sine table size to reduce memory usage and increase access speed  
+  
+### `mixin.minimal_nonvanilla`
+(default: `true`)  
+Optimizations that technically deviate from vanilla behavior, but must not affect gameplay or contraptions. Each optimization includes a description of the differences to vanilla behavior. In case any of these optimizations breaks any of your contraptions or affects your gameplay, please report it to our issue tracker as we consider this to be a bug.  
+  
+### `mixin.minimal_nonvanilla.world.expiring_chunk_tickets`
+(default: `true`)  
+Only check positions with expiring tickets during ticket expiration. Can cause reordering of chunks unloading. The chunk unloading order in vanilla is predictable, but depends on the hash of the chunk position of the tickets and the hashes of the other chunk tickets, and the order of creation of the chunk tickets when hash collisions occur. No known contraptions depend on the unload order.  
   
 ### `mixin.profiler`
 (default: `true`)  
@@ -511,10 +519,6 @@ Requirements:
 ### `mixin.world.chunk_access`
 (default: `true`)  
 Several changes to the chunk manager to speed up chunk access  
-  
-### `mixin.world.chunk_tickets`
-(default: `true`)  
-Improves the chunk ticket sets by speeding up the removal of chunk tickets  
   
 ### `mixin.world.chunk_ticking`
 (default: `true`)  
