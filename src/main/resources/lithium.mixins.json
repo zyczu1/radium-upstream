@@ -4,9 +4,6 @@
   "minVersion": "0.8.5",
   "compatibilityLevel": "JAVA_16",
   "plugin": "me.jellysquid.mods.lithium.common.config.LithiumConfig",
-  "injectors": {
-    "defaultRequire": 1
-  },
   "overwrites": {
     "conformVisibility": true
   },
