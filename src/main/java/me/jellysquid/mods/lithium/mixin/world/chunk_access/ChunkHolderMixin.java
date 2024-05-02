@@ -14,12 +14,13 @@ import java.util.concurrent.atomic.AtomicReferenceArray;
 
 @Mixin(ChunkHolder.class)
 public class ChunkHolderMixin implements ChunkHolderExtended {
-    ;
+    @Shadow
+    @Final
+    private AtomicReferenceArray<CompletableFuture<OptionalChunk<Chunk>>> futuresByStatus;
 
     @Shadow
     WorldChunk currentlyLoading;
 
-    private AtomicReferenceArray<CompletableFuture<OptionalChunk<Chunk>>> futuresByStatus;
     private long lastRequestTime;
 
     @Override
