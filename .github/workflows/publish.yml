@@ -68,10 +68,9 @@ jobs:
           files: |
             build/libs/!(*-@(api|dev|sources|javadoc)).jar
 
-          version-type: release
+          version-type: beta
 
           loaders: |
-            forge
             neoforge
 
           game-versions: |
@@ -81,4 +80,4 @@ jobs:
             canary(incompatible)
 
           java: |
-            17
+            21
