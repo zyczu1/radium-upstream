@@ -26,12 +26,6 @@ public class LithiumConfig extends AbstractCaffeineConfigMixinPlugin {
             option.addModOverride(true, "radium");
         }
 
-        if (!LoadingModList.get().getErrors().isEmpty()) {
-            for (Option op : config.getOptions().values()) {
-                op.addModOverride(false, "fml-loading-error");
-            }
-        }
-
         return config;
     }
 

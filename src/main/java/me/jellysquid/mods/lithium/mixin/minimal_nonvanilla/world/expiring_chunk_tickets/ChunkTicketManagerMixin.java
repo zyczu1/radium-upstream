@@ -1,5 +1,6 @@
 package me.jellysquid.mods.lithium.mixin.minimal_nonvanilla.world.expiring_chunk_tickets;
 
+import com.llamalad7.mixinextras.sugar.Local;
 import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectIterator;
@@ -41,7 +42,7 @@ public abstract class ChunkTicketManagerMixin {
         return true;
     }
 
-    @Redirect(method = { "method_14041", "m_183922_", "lambda$getTickets$6" }, at = @At(value = "INVOKE", target = "Lnet/minecraft/util/collection/SortedArraySet;create(I)Lnet/minecraft/util/collection/SortedArraySet;"))
+    @Redirect(method = { "lambda$addTicket$6", "lambda$getTickets$7" }, at = @At(value = "INVOKE", target = "Lnet/minecraft/util/collection/SortedArraySet;create(I)Lnet/minecraft/util/collection/SortedArraySet;"))
     private static SortedArraySet<ChunkTicket<?>> useLithiumSortedArraySet(int initialCapacity) { // TODO fix redirect method
         return new ChunkTicketSortedArraySet<>(initialCapacity);
     }
@@ -56,10 +57,9 @@ public abstract class ChunkTicketManagerMixin {
      */
     @Inject(
             method = "addTicket(JLnet/minecraft/server/world/ChunkTicket;)V",
-            at = @At(value = "INVOKE", target = "Lnet/minecraft/server/world/ChunkTicket;setTickCreated(J)V"),
-            locals = LocalCapture.CAPTURE_FAILHARD
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/server/world/ChunkTicket;setTickCreated(J)V")
     )
-    private void registerExpiringTicket(long position, ChunkTicket<?> ticket, CallbackInfo ci, SortedArraySet<ChunkTicket<?>> ticketsAtPos, int i, ChunkTicket<?> chunkTicket) {
+    private void registerExpiringTicket(long position, ChunkTicket<?> ticket, CallbackInfo ci, @Local SortedArraySet<ChunkTicket<?>> ticketsAtPos) {
         if (canExpire(ticket)) {
             this.positionWithExpiringTicket.put(position, ticketsAtPos);
         }
@@ -83,10 +83,9 @@ public abstract class ChunkTicketManagerMixin {
             at = @At(
                     value = "INVOKE", shift = At.Shift.BEFORE,
                     target = "Lnet/minecraft/util/collection/SortedArraySet;addAndGet(Ljava/lang/Object;)Ljava/lang/Object;"
-            ),
-            locals = LocalCapture.CAPTURE_FAILHARD
+            )
     )
-    private void updateSetMinExpiryTime(long position, ChunkTicket<?> ticket, CallbackInfo ci, SortedArraySet<?> sortedArraySet, int i) {
+    private void updateSetMinExpiryTime(long position, ChunkTicket<?> ticket, CallbackInfo ci, @Local(ordinal = 0) SortedArraySet<?> sortedArraySet) {
         if (canExpire(ticket) && sortedArraySet instanceof ChunkTicketSortedArraySet<?> chunkTickets) {
             chunkTickets.addExpireTime(this.age + ticket.getType().getExpiryTicks());
         }
