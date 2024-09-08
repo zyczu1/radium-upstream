@@ -1,7 +1,7 @@
 import net.fabricmc.loom.task.RemapJarTask
 
 plugins {
-    id 'dev.architectury.loom' version '1.6.395'
+    id 'dev.architectury.loom' version '1.7-SNAPSHOT'
 
     // This dependency is only used to determine the state of the Git working tree so that build artifacts can be
     // more easily identified. TODO: Lazily load GrGit via a service only when builds are performed.
@@ -80,7 +80,7 @@ repositories {
             maven { url 'https://jitpack.io' }
             maven { url "https://maven.su5ed.dev/releases" }
             maven { url "https://maven.neoforged.net" }
-            maven { url "https://repo.constructlegacy.ru/public" }
+            maven { url "https://repo.redlance.org/public" }
         }
     }
 }
@@ -94,7 +94,7 @@ dependencies {
     }
 
     neoForge "net.neoforged:neoforge:${project.loader_version}"
-    //modCompileOnly "dev.su5ed.sinytra.fabric-api:fabric-transfer-api-v1:${project.fabric_version}" // Ye
+    modCompileOnly "dev.su5ed.sinytra.fabric-api:fabric-transfer-api-v1:${project.fabric_version}" // Ye
 
     compileOnly 'net.caffeinemc:mixin-config-plugin:1.0-SNAPSHOT'
 
@@ -172,8 +172,8 @@ publishing {
     // select the repositories you want to publish to
     repositories {
         maven {
-            name = "ConstructLegacy"
-            url = "https://repo.constructlegacy.ru/public"
+            name = "Redlance"
+            url = "https://repo.redlance.org/public"
             credentials {
                 username = System.getenv("MAVEN_USERNAME")
                 password = System.getenv("MAVEN_PASSWORD")

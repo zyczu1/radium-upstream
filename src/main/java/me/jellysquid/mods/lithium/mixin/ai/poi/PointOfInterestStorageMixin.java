@@ -10,6 +10,7 @@ import me.jellysquid.mods.lithium.common.world.interests.iterator.SinglePointOfI
 import me.jellysquid.mods.lithium.common.world.interests.iterator.SphereChunkOrderedPoiSetSpliterator;
 import net.minecraft.registry.DynamicRegistryManager;
 import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.server.world.ChunkErrorHandler;
 import net.minecraft.util.annotation.Debug;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
@@ -43,8 +44,8 @@ public abstract class PointOfInterestStorageMixin extends SerializingRegionBased
         implements PointOfInterestStorageExtended {
 
 
-    public PointOfInterestStorageMixin(ChunkPosKeyedStorage storageAccess, Function<Runnable, Codec<PointOfInterestSet>> codecFactory, Function<Runnable, PointOfInterestSet> factory, DynamicRegistryManager registryManager, HeightLimitView world) {
-        super(storageAccess, codecFactory, factory, registryManager, world);
+    public PointOfInterestStorageMixin(ChunkPosKeyedStorage storageAccess, Function<Runnable, Codec<PointOfInterestSet>> codecFactory, Function<Runnable, PointOfInterestSet> factory, DynamicRegistryManager registryManager, ChunkErrorHandler errorHandler, HeightLimitView world) {
+        super(storageAccess, codecFactory, factory, registryManager, errorHandler, world);
     }
 
     /**
