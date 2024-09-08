@@ -21,7 +21,7 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 import java.util.Map;
 
 @Mixin(World.class)
-public class WorldMixin { // TODO verify
+public class WorldMixin {
 
     @Inject(
             method = "markAndNotifyBlock",

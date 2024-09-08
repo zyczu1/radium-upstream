@@ -57,7 +57,9 @@ public class EntityShapeContextMixin {
     @Inject(
             method = "<init>(Lnet/minecraft/entity/Entity;)V",
             at = @At(
-                    value = "RETURN"
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/block/EntityShapeContext;<init>(ZDLnet/minecraft/item/ItemStack;Ljava/util/function/Predicate;Lnet/minecraft/entity/Entity;)V",
+                    shift = At.Shift.AFTER
             )
     )
     private void initFields(Entity entity, CallbackInfo ci) {
