@@ -107,7 +107,7 @@ dependencies {
 
     compileOnly 'net.caffeinemc:mixin-config-plugin:1.0-SNAPSHOT'
 
-    implementation(forgeRuntimeLibrary(include("com.github.dima_dencep.mods:NanoLiveConfig:1.2.0") {
+    implementation(forgeRuntimeLibrary(include("com.github.dima_dencep.mods:NanoLiveConfig:1.2.1") {
         exclude(group: "dev.su5ed.sinytra.fabric-api")
     }))
 }
