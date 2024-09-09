@@ -42,7 +42,7 @@ public abstract class ChunkTicketManagerMixin {
         return true;
     }
 
-    @Redirect(method = { "lambda$addTicket$6", "lambda$getTickets$7" }, at = @At(value = "INVOKE", target = "Lnet/minecraft/util/collection/SortedArraySet;create(I)Lnet/minecraft/util/collection/SortedArraySet;"))
+    @Redirect(method = { "lambda$addTicket$6", "lambda$getTickets$7" }, at = @At(value = "INVOKE", target = "Lnet/minecraft/util/SortedArraySet;create(I)Lnet/minecraft/util/SortedArraySet;"))
     private static SortedArraySet<ChunkTicket<?>> useLithiumSortedArraySet(int initialCapacity) { // TODO fix redirect method
         return new ChunkTicketSortedArraySet<>(initialCapacity);
     }
@@ -82,7 +82,7 @@ public abstract class ChunkTicketManagerMixin {
             method = "addTicket(JLnet/minecraft/server/world/ChunkTicket;)V",
             at = @At(
                     value = "INVOKE", shift = At.Shift.BEFORE,
-                    target = "Lnet/minecraft/util/collection/SortedArraySet;addAndGet(Ljava/lang/Object;)Ljava/lang/Object;"
+                    target = "Lnet/minecraft/util/SortedArraySet;addOrGet(Ljava/lang/Object;)Ljava/lang/Object;"
             )
     )
     private void updateSetMinExpiryTime(long position, ChunkTicket<?> ticket, CallbackInfo ci, @Local(ordinal = 0) SortedArraySet<?> sortedArraySet) {
@@ -106,7 +106,7 @@ public abstract class ChunkTicketManagerMixin {
     @Redirect(method = "purge",
             at = @At(
                 value = "INVOKE",
-                target = "Lnet/minecraft/util/collection/SortedArraySet;isEmpty()Z"
+                target = "Lnet/minecraft/util/SortedArraySet;isEmpty()Z"
             )
     )
     private boolean retCanNoneExpire(SortedArraySet<ChunkTicket<?>> tickets) {
@@ -116,7 +116,7 @@ public abstract class ChunkTicketManagerMixin {
     @Inject(method = "purge", locals = LocalCapture.CAPTURE_FAILHARD,
             at = @At(
                     value = "INVOKE", shift = At.Shift.BEFORE,
-                    target = "Lnet/minecraft/util/collection/SortedArraySet;isEmpty()Z"
+                    target = "Lnet/minecraft/util/SortedArraySet;isEmpty()Z"
             )
     )
     private void removeIfEmpty(CallbackInfo ci, ObjectIterator<?> objectIterator, Long2ObjectMap.Entry<SortedArraySet<ChunkTicket<?>>> entry) {
@@ -129,7 +129,7 @@ public abstract class ChunkTicketManagerMixin {
     @Redirect(method = "purge",
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/util/collection/SortedArraySet;iterator()Ljava/util/Iterator;"
+                    target = "Lnet/minecraft/util/SortedArraySet;iterator()Ljava/util/Iterator;"
             )
     )
     private Iterator<ChunkTicket<?>> skipIfNotExpiringNow(SortedArraySet<ChunkTicket<?>> ticketsAtPos) {
