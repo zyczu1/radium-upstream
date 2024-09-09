@@ -5,7 +5,6 @@ on:
 
 jobs:
   build:
-    if: false
     runs-on: ubuntu-latest
     steps:
 
@@ -69,10 +68,9 @@ jobs:
           files: |
             build/libs/!(*-@(api|dev|sources|javadoc)).jar
 
-          version-type: release
+          version-type: beta
 
           loaders: |
-            forge
             neoforge
 
           game-versions: |
@@ -80,6 +78,7 @@ jobs:
 
           dependencies: |
             canary(incompatible)
+            foxium(incompatible)
 
           java: |
-            17
+            21
