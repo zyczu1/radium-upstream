@@ -98,7 +98,7 @@ dependencies {
 
     compileOnly 'net.caffeinemc:mixin-config-plugin:1.0-SNAPSHOT'
 
-    implementation(forgeRuntimeLibrary(include("com.github.dima_dencep.mods:NanoLiveConfig:2.2.0") {
+    implementation(forgeRuntimeLibrary(include("com.github.dima_dencep.mods:NanoLiveConfig:2.3.2") {
         exclude(group: "dev.su5ed.sinytra.fabric-api")
     }))
 }
@@ -117,8 +117,9 @@ processResources.dependsOn createMixinConfig
 createMixinConfig.dependsOn compileJava
 
 def getVersionMetadata() {
+    def build_release = System.getenv("BUILD_RELEASE") == "true"
     // CI builds only
-    if (project.hasProperty("build.release")) {
+    if (build_release) {
         return "" // no tag whatsoever
     }
 
