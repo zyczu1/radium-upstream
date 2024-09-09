@@ -17,8 +17,40 @@ import java.util.Properties;
 public class LithiumConfig extends AbstractCaffeineConfigMixinPlugin {
 
     private CaffeineConfig applyLithiumCompat(CaffeineConfig config) {
-        if (LoadingModList.get().getModFileById("ferritecore") != null) { // https://github.com/malte0811/FerriteCore/blob/1.20.0/Fabric/src/main/resources/fabric.mod.json#L38
+        if (LoadingModList.get().getModFileById("ferritecore") != null) { // https://github.com/malte0811/FerriteCore/blob/1.21.0/Fabric/src/main/resources/fabric.mod.json#L38-L40
             config.getOption("mixin.alloc.blockstate").addModOverride(false, "ferritecore");
+        }
+
+        if (LoadingModList.get().getModFileById("moonrise") != null) { // https://github.com/Tuinity/Moonrise/blob/master/fabric/src/main/resources/fabric.mod.json#L43-L69
+            config.getOption("mixin.collections.chunk_tickets").addModOverride(false, "moonrise");
+            config.getOption("mixin.world.temperature_cache").addModOverride(false, "moonrise");
+            config.getOption("mixin.block.flatten_states").addModOverride(false, "moonrise");
+            config.getOption("mixin.math.fast_util").addModOverride(false, "moonrise");
+            config.getOption("mixin.minimal_nonvanilla.collisions.empty_space").addModOverride(false, "moonrise");
+            config.getOption("mixin.alloc.deep_passengers").addModOverride(false, "moonrise");
+            config.getOption("mixin.math.fast_blockpos").addModOverride(false, "moonrise");
+            config.getOption("mixin.shapes.blockstate_cache").addModOverride(false, "moonrise");
+            config.getOption("mixin.world.block_entity_ticking").addModOverride(false, "moonrise");
+            config.getOption("mixin.collections.entity_ticking").addModOverride(false, "moonrise");
+            config.getOption("mixin.world.chunk_access").addModOverride(false, "moonrise");
+            config.getOption("mixin.ai.poi").addModOverride(false, "moonrise");
+            config.getOption("mixin.chunk.no_validation").addModOverride(false, "moonrise");
+            config.getOption("mixin.minimal_nonvanilla.world.expiring_chunk_tickets").addModOverride(false, "moonrise");
+            config.getOption("mixin.world.tick_scheduler").addModOverride(false, "moonrise");
+            config.getOption("mixin.alloc.chunk_ticking").addModOverride(false, "moonrise");
+            config.getOption("mixin.entity.replace_entitytype_predicates").addModOverride(false, "moonrise");
+            config.getOption("mixin.util.block_tracking").addModOverride(false, "moonrise");
+            config.getOption("mixin.shapes.specialized_shapes").addModOverride(false, "moonrise");
+            config.getOption("mixin.shapes.optimized_matching").addModOverride(false, "moonrise");
+            config.getOption("mixin.entity.collisions.intersection").addModOverride(false, "moonrise");
+            config.getOption("mixin.entity.collisions.movement").addModOverride(false, "moonrise");
+            config.getOption("mixin.entity.collisions.unpushable_cramming").addModOverride(false, "moonrise");
+            config.getOption("mixin.chunk.entity_class_groups").addModOverride(false, "moonrise");
+            config.getOption("mixin.alloc.entity_tracker").addModOverride(false, "moonrise");
+
+            // Additional
+            config.getOption("mixin.entity.collisions.fluid").addModOverride(false, "moonrise");
+            config.getOption("mixin.world.explosions").addModOverride(false, "moonrise");
         }
 
         Option option = config.getOption("mixin.block.hopper.worldedit_compat");
