@@ -9,10 +9,13 @@ import me.jellysquid.mods.lithium.common.entity.movement_tracker.SectionedEntity
 import me.jellysquid.mods.lithium.common.util.deduplication.LithiumInterner;
 import net.minecraft.entity.ai.pathing.EntityNavigation;
 import net.minecraft.item.ItemStack;
+import net.minecraft.registry.DynamicRegistryManager;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.village.raid.Raid;
 import net.minecraft.world.World;
 import net.minecraft.world.event.listener.GameEventDispatcher;
+
+import java.util.Objects;
 
 public interface LithiumData {
 
@@ -41,7 +44,10 @@ public interface LithiumData {
         public Data(World world) {
             this(
                     new Long2ReferenceOpenHashMap<>(),
-                    world.getRegistryManager().getOptionalWrapper(RegistryKeys.BANNER_PATTERN).map(Raid::getOminousBanner).orElse(null),
+                    Objects.requireNonNullElse(world.getRegistryManager(), DynamicRegistryManager.EMPTY)
+                            .getOptionalWrapper(RegistryKeys.BANNER_PATTERN)
+                            .map(Raid::getOminousBanner)
+                            .orElse(null),
                     new ReferenceOpenHashSet<>(),
                     new LithiumInterner<>(),
                     new LithiumInterner<>(),
