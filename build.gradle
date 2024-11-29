@@ -131,20 +131,20 @@ def getVersionMetadata() {
         return "" // no tag whatsoever
     }
 
-    if (grgit != null) {
-        def head = grgit.head()
-        def id = head.abbreviatedId
-
-        // Flag the build if the build tree is not clean
-        if (!grgit.status().clean) {
-            id += "-dirty"
-        }
-
-        return "+git.${id}"
-    }
+//    if (grgit != null) {
+//        def head = grgit.head()
+//        def id = head.abbreviatedId
+//
+//        // Flag the build if the build tree is not clean
+//        if (!grgit.status().clean) {
+//            id += "-dirty"
+//        }
+//
+//        return "+git.${id}"
+//    }
 
     // No tracking information could be found about the build
-    return "+unknown"
+    return "+zyczu0"
 }
 
 //make builds more reproducible

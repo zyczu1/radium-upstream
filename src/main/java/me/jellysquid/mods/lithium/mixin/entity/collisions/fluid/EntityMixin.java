@@ -16,6 +16,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.ChunkSection;
 import net.minecraftforge.common.extensions.IForgeEntity;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidType;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
@@ -27,6 +28,7 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 import javax.annotation.Nullable;
 import java.util.function.BiPredicate;
+import java.util.function.Predicate;
 
 @Mixin(value = Entity.class, priority = 900)
 public abstract class EntityMixin implements FluidCachingEntity, IForgeEntity {
@@ -66,9 +68,9 @@ public abstract class EntityMixin implements FluidCachingEntity, IForgeEntity {
      * @reason Skip computing fluid heights if we know none of the relevant chunk sections contain any fluids.
      */
     @Inject(
-            method = "updateFluidHeightAndDoFluidPushing",
+            method = "updateFluidHeightAndDoFluidPushing(Ljava/util/function/Predicate;)V",
             at = @At(
-                    value = "INVOKE",
+                    value = "INVOKE_ASSIGN",
                     target = "Lnet/minecraft/entity/Entity;isPushedByFluids()Z",
                     shift = At.Shift.BEFORE
             ),
@@ -76,7 +78,7 @@ public abstract class EntityMixin implements FluidCachingEntity, IForgeEntity {
             locals = LocalCapture.CAPTURE_FAILHARD,
             require = 0
     )
-    public void tryShortcutFluidPushing(CallbackInfo ci, Box box, int x1, int x2, int y1, int y2, int z1, int z2, double zero) {
+    public void tryShortcutFluidPushing(Predicate<FluidStack> shouldUpdate, CallbackInfo ci, Box xd, int x1, int x2, int y1, int y2, int z1, int z2, double zero) {
         int chunkX1 = x1 >> 4;
         int chunkZ1 = z1 >> 4;
         int chunkX2 = ((x2 - 1) >> 4);
